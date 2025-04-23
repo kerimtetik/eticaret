@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Gozluk Dunyasi</title>
+</head>
+<body>
+<div class="container mt-5">
+  <h2>Sepetiniz</h2>
+  <div id="cart-items">
+    <!-- JavaScript ile doldurulacak -->
+  </div>
+  <hr>
+  <div class="text-end">
+    <button class="btn btn-success" onclick="goToCheckout()">Ödemeye Geç</button>
+  </div>
+</div>
+
+<script>
+const userId = localStorage.getItem("userId"); // Oturumdan alınmalı
+fetch(`/cart/items?userId=${userId}`)
+  .then(res => res.json())
+  .then(items => {
+    const container = document.getElementById('cart-items');
+    container.innerHTML = items.map(item => `
+      <div class="card mb-2">
+        <div class="card-body d-flex justify-content-between">
+          <div>
+            <strong>${item.product.name}</strong><br>
+            ${item.product.description}
+          </div>
+          <div>
+            <input type="number" value="${item.quantity}" min="1" onchange="updateQuantity(${item.id}, this.value)">
+            <button class="btn btn-danger btn-sm" onclick="removeItem(${item.id})">Sil</button>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  });
+
+function updateQuantity(itemId, quantity) {
+  fetch(`/cart/update?cartItemId=${itemId}&quantity=${quantity}`, { method: 'POST' });
+}
+function removeItem(itemId) {
+  fetch(`/cart/remove?cartItemId=${itemId}`, { method: 'POST' }).then(() => location.reload());
+}
+function goToCheckout() {
+  if (!userId) {
+    alert("Lütfen giriş yapınız.");
+    window.location.href = "/login.html";
+  } else {
+    window.location.href = "/checkout.html";
+  }
+}
+</script>
+
+
+</body>
+</html>
