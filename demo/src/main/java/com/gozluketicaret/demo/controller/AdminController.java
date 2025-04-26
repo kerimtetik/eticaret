@@ -24,21 +24,21 @@ public class AdminController {
     // Admin Panel Ana Sayfa
     @GetMapping("/dashboard")
     public String dashboard() {
-        return "admin/dashboard"; // admin paneli ana sayfa
+        return "admin-dashboard"; // admin paneli ana sayfa
     }
 
     // Ürün Ekleme Sayfası
     @GetMapping("/products/add")
     public String showAddProductForm(Model model) {
         model.addAttribute("product", new Product());
-        return "admin/add-product";
+        return "admin-add-product";
     }
 
     // Ürün Ekleme İşlemi
     @PostMapping("/products/add")
     public String addProduct(@ModelAttribute Product product) {
         productRepository.save(product);
-        return "redirect:/admin/products";
+        return "admin-dashboard";
     }
 
     // Ürünleri Listele
@@ -54,6 +54,6 @@ public class AdminController {
     public String listUsers(Model model) {
         List<User> users = (List<User>) userRepository.findAll();
         model.addAttribute("users", users);
-        return "admin/user-list";
+        return "admin-user-list";
     }
 }

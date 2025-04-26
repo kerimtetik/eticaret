@@ -16,15 +16,16 @@ public class Product {
 	    private String product_code;
 		private Boolean polarized;
 	    private String brand;
-	    private int price;
+	    private double price;
 	    private String gender;
 	    private String imageUrl;
+	    private Integer stock;
 	    
 	    public Product() {
 	        // Hibernate için boş constructor
 	    }
 
-	    public Product(String name,String product_code,Boolean polarized,String brand,int price,String gender,String imageUrl) {
+	    public Product(String name,String product_code,Boolean polarized,String brand,double price,String gender,String imageUrl, Integer stock ) {
 	    	
 	    	this.name=name;
 	    	this.product_code=product_code;
@@ -33,6 +34,7 @@ public class Product {
 	    	this.price=price;
 	    	this.gender=gender;
 	    	this.imageUrl=imageUrl;
+	    	this.stock=stock;
 	    	
 	    	
 	    }
@@ -67,10 +69,10 @@ public class Product {
 		public void setBrand(String brand) {
 			this.brand = brand;
 		}
-		public int getPrice() {
+		public double getPrice() {
 			return price;
 		}
-		public void setPrice(int price) {
+		public void setPrice(double price) {
 			this.price = price;
 		}
 		public String getGender() {
@@ -84,6 +86,12 @@ public class Product {
 		}
 		public void setImageUrl(String imageUrl) {
 			this.imageUrl = imageUrl;
+		}
+		public Integer getStock() {
+			return stock;
+		}
+		public void setStock(Integer stock) {
+			this.stock = stock;
 		}
 
 	    

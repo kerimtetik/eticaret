@@ -7,13 +7,24 @@
 </head>
 <body class="container mt-5">
     <h2>Mevcut Ürünler</h2>
+
+    <!-- Toplam Ürün Sayısı ve Toplam Stok -->
+    <div class="mb-4">
+        <p>Toplam Ürün Sayısı: <span th:text="${productCount}"></span></p>
+        <p>Toplam Stok: <span th:text="${totalStock}"></span></p>
+    </div>
+
     <table class="table table-bordered">
         <thead>
             <tr>
                 <th>ID</th>
                 <th>Ad</th>
-                <th>Açıklama</th>
+                <th>Ürün Kodu</th>
+                <th>Polarize</th>
+                <th>Marka</th>
                 <th>Fiyat</th>
+                <th>Cinsiyet</th>
+                <th>Resim URL</th>
                 <th>Stok</th>
             </tr>
         </thead>
@@ -21,8 +32,12 @@
             <tr th:each="product : ${products}">
                 <td th:text="${product.id}"></td>
                 <td th:text="${product.name}"></td>
-                <td th:text="${product.description}"></td>
+                <td th:text="${product.product_code}"></td>
+                <td th:text="${product.polarized}"></td>
+                <td th:text="${product.brand}"></td>
                 <td th:text="${product.price}"></td>
+                <td th:text="${product.gender}"></td>
+                <td th:text="${product.imageUrl}"></td>
                 <td th:text="${product.stock}"></td>
             </tr>
         </tbody>
