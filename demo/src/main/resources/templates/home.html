@@ -1,19 +1,18 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html xmlns:th="http://www.thymeleaf.org" lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gozluk Dunyasi</title>
+    <title>Gözlük Dünyası</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-	    .btn-color-purple {
-   			 transition: background-color 1.3s ease, color 1.3s ease;
-}
-		.btn-color-purple:hover {
-		    background-color: #800080 !important;
-		    color: white !important;
-}
-    	
+        .btn-color-purple {
+            transition: background-color 1.3s ease, color 1.3s ease;
+        }
+        .btn-color-purple:hover {
+            background-color: #800080 !important;
+            color: white !important;
+        }
         .navbar-brand { font-size: 1.5rem; font-weight: bold; }
         .product-card { border: 1px solid #ddd; border-radius: 8px; padding: 15px; }
         .category-box {
@@ -40,22 +39,43 @@
             font-size: 1.5rem;
         }
         .video-container {
-		    display: flex;
-		    justify-content: flex-start; /* Video'yu sola hizalar */
-		    width: 100%;
-		    height: auto;
-		    margin-top: 20px;
-	}
-	
-	   .video-container video {
-		    width: 500px; /* Videoyu ekranın tamamına sığdırır. Genişlik sınırı koymayabilirsiniz */
-		    height: 1200px; /* Yüksekliği otomatik ayarlar */
-		    border-radius: 10px;
-}
+            display: flex;
+            justify-content: flex-start;
+            width: 100%;
+            height: auto;
+            margin-top: 20px;
+        }
+
+        .video-container video {
+            width: 500px;
+            height: 1200px;
+            border-radius: 10px;
+        }
 
     </style>
 </head>
 <body>
+
+    <!-- Kullanıcı Girişi Kontrolü -->
+    <div>
+        <div th:if="${user != null}">
+            <!-- Giriş yapmış kullanıcı için profil ve çıkış butonları -->
+            <a href="/profile" th:text="'Profil: ' + ${user.username}">Profil</a> |
+            <a href="/logout">Çıkış Yap</a>
+        </div>
+        <div th:if="${user == null}">
+            <!-- Giriş yapmamış kullanıcı için giriş yap butonu -->
+            <a href="/login">Giriş Yap</a>
+        </div>
+    </div>
+
+    <!-- Sepet -->
+    <div>
+        <a href="/cart">Sepetim
+            <span th:if="${cartItems != null}" th:text="'(' + ${cartItems.size()} + ')'" ></span>
+        </a>
+    </div>
+
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container">
@@ -65,15 +85,21 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="#">Ana Sayfa</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/home">Ana Sayfa</a></li>
                     <li class="nav-item"><a class="nav-link btn btn-primary text-black btn-color-purple" href="/products">Ürünler</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">İletişim</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/contact">İletişim</a></li>
+                    
                     <li class="nav-item">
-					<a class="nav-link btn btn-primary text-black btn-color-purple" href="/login">
-					Giriş Yap</a></li>
-					
-                    
-                    
+                        <!-- Kullanıcı giriş durumuna göre butonları değiştir -->
+                        <div th:if="${user == null}">
+                            <a class="nav-link btn btn-primary text-black btn-color-purple" href="/login">Giriş Yap</a>
+                        </div>
+                        <div th:if="${user != null}">
+                            <a class="nav-link btn btn-primary text-black btn-color-purple" href="/cart">Sepetim
+                                <span th:if="${cartItems != null}" th:text="'(' + ${cartItems.size()} + ')'" ></span>
+                            </a>
+                        </div>
+                    </li>
                 </ul>
             </div>
         </div>

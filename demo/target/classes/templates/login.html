@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="tr" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,10 +14,10 @@
             <a class="navbar-brand" href="#">Gözlük Dünyası</a>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="index.html">Ana Sayfa</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Ürünler</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">İletişim</a></li>
-                    <li class="nav-item"><a class="nav-link btn btn-primary text-white" href="login.html">Giriş Yap</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/}">Ana Sayfa</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/urunler}">Ürünler</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/iletisim}">İletişim</a></li>
+                    <li class="nav-item"><a class="nav-link btn btn-primary text-white" th:href="@{/login}">Giriş Yap</a></li>
                 </ul>
             </div>
         </div>
@@ -26,7 +26,7 @@
     <!-- Giriş Formu -->
     <div class="container mt-5">
         <h2 class="text-center">Giriş Yap</h2>
-        <form action="#" method="POST" class="mt-4">
+        <form th:action="@{/login}" method="POST" class="mt-4">
             <div class="mb-3">
                 <label for="username" class="form-label">Kullanıcı Adı</label>
                 <input type="text" class="form-control" id="username" name="username" required>
@@ -37,12 +37,14 @@
             </div>
             <button type="submit" class="btn btn-primary w-100">Giriş Yap</button>
         </form>
-            <div th:if="${error}" style="color:red;">
-     		   <p th:text="${error}"></p>
-   		 </div>
+
+        <!-- Giriş hatası mesajı -->
+        <div class="text-center mt-3 text-danger" th:if="${error}">
+            <p th:text="${error}"></p>
+        </div>
 
         <div class="text-center mt-3">
-            <p>Hesabınız yok mu? <a href="/register">Hesap oluşturun</a></p>
+            <p>Hesabınız yok mu? <a th:href="@{/register}">Hesap oluşturun</a></p>
         </div>
     </div>
 
