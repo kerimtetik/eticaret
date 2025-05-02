@@ -10,4 +10,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 @Repository
 public interface UserRepository extends CrudRepository<User, Long> {
 	User findByUsernameAndPassword(String username, String password);
+	boolean existsByUsername(String username);
+    boolean existsByEmail(String email);
 }

@@ -1,6 +1,7 @@
 package com.gozluketicaret.demo.controller;
 
 import com.gozluketicaret.demo.Product;
+import com.gozluketicaret.demo.ProductImage;
 import com.gozluketicaret.demo.model.User;
 import com.gozluketicaret.demo.repository.ProductRepository;
 import com.gozluketicaret.demo.repository.UserRepository;
@@ -10,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/admin")
@@ -34,12 +36,24 @@ public class AdminController {
         return "admin-add-product";
     }
 
-    // Ürün Ekleme İşlemi
     @PostMapping("/products/add")
-    public String addProduct(@ModelAttribute Product product) {
+    public String addProduct(@ModelAttribute Product product,
+                             @RequestParam("imageUrls") List<String> imageUrls) {
+
+        List<ProductImage> imageList = imageUrls.stream()
+            .map(url -> {
+                ProductImage img = new ProductImage();
+                img.setImageUrl(url);
+                img.setProduct(product);
+                return img;
+            }).collect(Collectors.toList());
+
+        product.setImages(imageList);
         productRepository.save(product);
+
         return "admin-dashboard";
     }
+
 
     // Ürünleri Listele
     @GetMapping("/products")

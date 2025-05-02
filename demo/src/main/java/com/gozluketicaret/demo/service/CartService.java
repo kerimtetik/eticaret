@@ -1,5 +1,6 @@
 package com.gozluketicaret.demo.service;
 
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,4 +85,16 @@ public class CartService {
         cart.getItems().clear();
         cartRepository.save(cart);
     }
+    public double getCartTotal(Long userId) {
+        List<CartItem> items = getCartItems(userId);
+        double total = 0.0;
+
+        for (CartItem item : items) {
+            total += item.getProduct().getPrice() * item.getQuantity();
+        }
+
+        return total;
+    }
+
+
 }

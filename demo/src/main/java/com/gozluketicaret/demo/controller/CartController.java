@@ -28,15 +28,20 @@ public class CartController {
     private ProductRepository productRepository;
 
     // Sepet sayfasını gösterir
+    
     @GetMapping
     public String showCartPage(Model model, HttpSession session) {
         User user = (User) session.getAttribute("loggedInUser");
         if (user != null) {
             List<CartItem> items = cartService.getCartItems(user.getId());
             model.addAttribute("cartItems", items);
+
+            double total = cartService.getCartTotal(user.getId());
+            model.addAttribute("cartTotal", total);
         }
         return "cart";
     }
+
 
     // Sepete ürün ekler
     @PostMapping("/add")
@@ -55,21 +60,17 @@ public class CartController {
         return "redirect:/cart";
     }
 
-    // Sepet öğesinin miktarını günceller
     @PostMapping("/update")
     @ResponseBody
     public ResponseEntity<String> updateQuantity(@RequestParam Long cartItemId, @RequestParam int quantity) {
         try {
-            if (quantity <= 0) {
-                return ResponseEntity.badRequest().body("Adet 0 veya daha küçük olamaz.");
-            }
             cartService.updateQuantity(cartItemId, quantity);
-            return ResponseEntity.ok("Sepet öğesi güncellendi.");
+            return ResponseEntity.ok("Güncellendi");
         } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Hata oluştu.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Hata oluştu");
         }
     }
+
 
     // Sepet öğesini kaldırır
     @PostMapping("/remove")
@@ -77,12 +78,12 @@ public class CartController {
     public ResponseEntity<String> removeItem(@RequestParam Long cartItemId) {
         try {
             cartService.removeItem(cartItemId);
-            return ResponseEntity.ok("Ürün sepetten çıkarıldı.");
+            return ResponseEntity.ok("Silindi");
         } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Hata oluştu.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Hata oluştu");
         }
     }
+
 
     // Sepet öğelerini (JSON olarak) getirir
     @GetMapping("/items")
