@@ -14,10 +14,7 @@ public class aa {
 	public String show1() {
 		return "register";
 	}
-	@GetMapping("/login")
-	public String show2() {
-		return "login";
-	}
+	
 	
 }
 

@@ -21,6 +21,8 @@ public class User {
     private String username;   // Yeni eklenen alan
     private String address;    // Yeni eklenen alan
     private String phone;      // Yeni eklenen alan
+    private boolean enabled;
+    
 
     // Getters and Setters
     public Long getId() {
@@ -86,4 +88,14 @@ public class User {
     public void setPhone(String phone) {
         this.phone = phone;
     }
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    
+
 }

@@ -26,17 +26,17 @@ public class ProductController {
 
 	    // Ürünler sayfası (filtreli veya tam liste)
 	    @GetMapping("/products")
-	    public String showProducts(@RequestParam(required = false) String gender, Model model) {
+	    public String showProducts(@RequestParam(required = false) List<String> gender, Model model) {
 	        List<Product> products;
 
-	        if (gender != null) {
-	            products = productService.getProductsByGender(gender); // filtreli
+	        if (gender != null && !gender.isEmpty()) {
+	            products = productService.getProductsByGenderList(gender); // Çoklu filtreli
 	        } else {
-	            products = productService.getAllProducts(); // tüm ürünler
+	            products = productService.getAllProducts(); // Tüm ürünler
 	        }
 
 	        model.addAttribute("products", products);
-	        return "products"; // products.html
+	        return "products";
 	    }
 
 	    // Admin paneli: tüm ürünler ve stok sayısı

@@ -14,8 +14,8 @@ public class ProductService {
     @Autowired
     private ProductRepository productRepository;
 
-    public List<Product> getProductsByGender(String gender) {
-        return productRepository.findByGenderIgnoreCase(gender);
+    public List<Product> getProductsByGenderList(List<String> genders) {
+        return productRepository.findByGenderIn(genders);
     }
 
     public List<Product> getAllProducts() {
