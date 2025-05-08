@@ -3,33 +3,40 @@ package com.gozluketicaret.demo.service;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
-
 @Service
 public class EmailService {
 
-    @Autowired
-    private JavaMailSender mailSender;
+	 @Autowired
+	    private JavaMailSender mailSender;
 
-    public void send(String to, String subject, String body) {
-        try {
-            MimeMessage message = mailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+	    private static final Logger logger = LoggerFactory.getLogger(EmailService.class);
 
-            helper.setTo(to);
-            helper.setSubject(subject);
-            helper.setText(body, true); // true = HTML içeriği desteklenir
+	    public void send(String to, String subject, String body) {
+	        logger.info("E-posta gönderiliyor: {}", to);
+	        logger.debug("Konu: {}, İçerik: {}", subject, body);
 
-            mailSender.send(message);
-            System.out.println("E-posta gönderildi: " + to);
-        } catch (MessagingException e) {
-        	System.err.println("E-posta gönderilemedi: " + e.getMessage());  // log
-            throw new RuntimeException("E-posta gönderme hatası: " + e.getMessage(), e);
-        }
-    }
+	        try {
+	            MimeMessage message = mailSender.createMimeMessage();
+	            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+
+	            helper.setTo(to);
+	            helper.setSubject(subject);
+	            helper.setText(body, true); // true = HTML içeriği desteklenir
+
+	            mailSender.send(message);
+	            logger.info("E-posta başarıyla gönderildi: {}", to);
+	        } catch (MessagingException e) {
+	            logger.error("E-posta gönderimi başarısız: {}", e.getMessage(), e);
+	            throw new RuntimeException("E-posta gönderme hatası: " + e.getMessage(), e);
+	        }
+	    }
 }
+ 
 

@@ -2,6 +2,9 @@ package com.gozluketicaret.demo.controller;
 
 
 import com.gozluketicaret.demo.model.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.annotation.*;
 import com.gozluketicaret.demo.repository.UserRepository;
 import com.gozluketicaret.demo.repository.VerificationTokenRepository;
 import com.gozluketicaret.demo.service.EmailService;
@@ -11,6 +14,7 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -36,43 +40,51 @@ public class UserController {
     private EmailService emailService;
     
     
-    
-
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @PostMapping("/register")
     public Map<String, Object> registerUser(@RequestBody User user) {
+        logger.info("Kayıt isteği alındı: {}", user.getUsername());
+
         Map<String, Object> response = new HashMap<>();
 
         if (userRepository.existsByUsername(user.getUsername())) {
+            logger.warn("Kullanıcı adı zaten kullanılıyor: {}", user.getUsername());
             response.put("message", "Kullanıcı adı zaten kullanılıyor.");
             return response;
         }
 
         if (userRepository.existsByEmail(user.getEmail())) {
+            logger.warn("E-posta zaten kayıtlı: {}", user.getEmail());
             response.put("message", "E-posta adresi zaten kayıtlı.");
             return response;
         }
 
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setEnabled(false); // doğrulama gerekli
-        userRepository.save(user);
+        try {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            user.setEnabled(false);
+            userRepository.save(user);
+            logger.debug("Kullanıcı veritabanına kaydedildi: {}", user.getUsername());
 
-        // Token oluştur ve mail gönder
-        String token = java.util.UUID.randomUUID().toString();
-        VerificationToken vt = new VerificationToken(token, user, LocalDateTime.now().plusHours(24));
-        tokenRepository.save(vt);
-        
-        // Link oluşturuluyor
-        String link = "http://localhost:8080/api/users/verify?token=" + token;
-        System.out.println("Doğrulama linki: " + link); // Konsolda görelim
+            String token = UUID.randomUUID().toString();
+            VerificationToken vt = new VerificationToken(token, user, LocalDateTime.now().plusHours(24));
+            tokenRepository.save(vt);
+            logger.debug("Doğrulama tokeni oluşturuldu: {}", token);
 
+            String link = "http://localhost:8080/api/users/verify?token=" + token;
+            emailService.send(user.getEmail(), "Hesabınızı doğrulayın", "Doğrulamak için tıklayın: " + link);
+            logger.info("Doğrulama e-postası gönderildi: {}", user.getEmail());
 
-        emailService.send(user.getEmail(), "Hesabınızı doğrulayın", "Doğrulamak için tıklayın: " + link);
+            response.put("message", "Kayıt başarılı. Lütfen e-postanızı doğrulayın.");
+        } catch (Exception e) {
+            logger.error("Kayıt sırasında hata: {}", e.getMessage(), e);
+            response.put("message", "Kayıt başarısız.");
+        }
 
-        
-        response.put("message", "Kayıt başarılı. Lütfen e-postanızı doğrulayın.");
         return response;
     }
+ 
+ 
 
     @GetMapping("/verify")
     public String verifyUser(@RequestParam String token) {
