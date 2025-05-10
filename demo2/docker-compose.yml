@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  springboot-app:
+    build: .
+    container_name: gozluk-app
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      SPRING_DATASOURCE_URL: jdbc:postgresql://host.docker.internal:5432/gozluke_ticaret
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: 1234
