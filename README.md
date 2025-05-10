@@ -31,7 +31,7 @@ Proje, temel özellikleri ve modern teknolojilerle geliştirilmiş bir yapıya s
 1. Bu repoyu klonlayın:
 
    ```bash
-   git clone https://github.com/kullaniciadi/proje-adi.git
+   git clone https://github.com/kerimtetik/eticaret.git
  
 - Sepete ekleme ve çıkarma  
 - Sipariş verme ve takip etme  
@@ -49,4 +49,4 @@ Proje, temel özellikleri ve modern teknolojilerle geliştirilmiş bir yapıya s
 1. Bu repoyu klonlayın:
 
    ```bash
-   git clone https://github.com/kullaniciadi/proje-adi.git
+   git clone https://github.com/kerimtetik/eticaret.git
