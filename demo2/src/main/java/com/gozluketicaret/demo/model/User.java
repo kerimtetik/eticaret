@@ -15,16 +15,26 @@ public class User {
     private Long id;
     
     private String email;
-    private String password;
+   
+	private String password;
     private String firstName;
     private String lastName;
     private String username;   // Yeni eklenen alan
     private String address;    // Yeni eklenen alan
     private String phone;      // Yeni eklenen alan
     private boolean enabled;
+    private String role = "USER"; // Varsayılan rol
     
 
     // Getters and Setters
+    public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+
     public Long getId() {
         return id;
     }

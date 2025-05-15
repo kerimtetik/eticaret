@@ -16,7 +16,6 @@
             background-color: #fff;
             transition: transform 0.3s ease;
             height: 100%;
-            position: relative;
         }
 
         .product-card:hover {
@@ -61,6 +60,7 @@
     </style>
 </head>
 <body>
+ <div th:replace="fragments/navbar :: navbar"></div>
 
 <div class="container mt-5">
     <h2 class="text-center mb-4">Ürünler</h2>
@@ -68,38 +68,23 @@
         <th:block th:each="product : ${products}">
             <div class="col-md-4 col-sm-6">
                 <div class="product-card text-center d-flex flex-column justify-content-between h-100">
-                    <!-- Görsel alanı -->
-<div class="position-relative text-center" 
-     th:attr="onmousemove=|handleMouseMove(event, ${product.id})|"
-     th:onclick="|goToProduct(${product.id})|">
+                    <!-- Ürün Görseli -->
+                    <img th:src="@{${product.images[0].imageUrl}}" alt="Ürün Görseli"
+                         class="product-image img-fluid rounded" />
 
-    <!-- Ana Görsel -->
-    <img th:id="'mainImage_' + ${product.id}"
-         th:src="@{${product.images[0].imageUrl}}"
-         class="product-image img-fluid rounded"
-         data-current-index="0" />
-
-    <!-- Gizli resim kaynakları -->
-    <div th:id="'imageSources_' + ${product.id}" style="display: none;">
-        <span th:each="img : ${product.images}" th:data-url="@{${img.imageUrl}}"></span>
-    </div>
-
-    <!-- Noktalar -->
-    <div th:id="'dots_' + ${product.id}" class="dots-container mt-2">
-        <span th:each="img, iter : ${product.images}"
-              th:id="'dot_' + ${product.id} + '_' + ${iter.index}"
-              th:classappend="${iter.index == 0} ? 'dot active' : 'dot'"></span>
-    </div>
-</div>
-
-                    <!-- Ürün adı ve fiyat -->
+                    <!-- Ürün Adı -->
                     <a th:href="@{'/product/' + ${product.id}}" class="text-decoration-none text-dark mt-3">
                         <h5 th:text="${product.name}">Ürün Adı</h5>
                     </a>
+
+                    <!-- Fiyat -->
                     <p class="text-muted" th:text="'₺' + ${product.price}">₺0.00</p>
 
-                    <!-- Sepete ekle -->
-                    <form th:action="@{/cart/add}" method="POST">
+                    <!-- Stok Tükendi -->
+                    <p th:if="${product.outOfStock}" class="text-danger fw-bold">Stok Tükendi</p>
+
+                    <!-- Sepete Ekle -->
+                    <form th:action="@{/cart/add}" method="POST" th:if="${!product.outOfStock}">
                         <input type="hidden" name="productId" th:value="${product.id}" />
                         <input type="hidden" name="quantity" value="1" />
                         <button type="submit" class="btn btn-purple btn-sm">Sepete Ekle</button>
@@ -109,40 +94,6 @@
         </th:block>
     </div>
 </div>
-
-<script>
-    function handleMouseMove(event, productId) {
-        const container = event.currentTarget;
-        const rect = container.getBoundingClientRect();
-        const x = event.clientX - rect.left;
-        const percent = x / rect.width;
-
-        const thumbnails = document.querySelectorAll(`#images_${productId} img`);
-        const total = thumbnails.length;
-        if (total === 0) return;
-
-        let index = Math.floor(percent * total);
-        index = Math.max(0, Math.min(total - 1, index));
-        const imgElement = thumbnails[index];
-        if (!imgElement) return;
-
-        const url = imgElement.src;
-        changeMainImage(productId, url, index);
-    }
-
-    function changeMainImage(productId, url, index) {
-        const mainImage = document.getElementById('mainImage_' + productId);
-        mainImage.src = url;
-        mainImage.setAttribute('data-current-index', index);
-
-        const dots = document.querySelectorAll(`#dots_${productId} .dot`);
-        dots.forEach((dot, i) => {
-            dot.classList.toggle('active', i === index);
-        });
-    }
-
-   
-</script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>

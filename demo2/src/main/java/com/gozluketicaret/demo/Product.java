@@ -25,6 +25,9 @@ public class Product {
     private double price;
     private String gender;
     private Integer stock;
+    private boolean outOfStock; // stok tükendi mi?
+    
+	
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProductImage> images = new ArrayList<>();
@@ -34,7 +37,7 @@ public class Product {
     }
 
     public Product(String name, String product_code, Boolean polarized, String brand,
-                   double price, String gender, List<ProductImage> images, Integer stock) {
+                   double price, String gender, List<ProductImage> images, Integer stock,Boolean outOfStock) {
         this.name = name;
         this.product_code = product_code;
         this.polarized = polarized;
@@ -120,4 +123,12 @@ public class Product {
     public void setStock(Integer stock) {
         this.stock = stock;
     }
+    public boolean isOutOfStock() {
+		return outOfStock;
+	}
+
+	public void setOutOfStock(boolean outOfStock) {
+		this.outOfStock = outOfStock;
+	}
+
 }

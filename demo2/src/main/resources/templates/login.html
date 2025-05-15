@@ -45,24 +45,23 @@
         a:hover {
             text-decoration: underline;
         }
+        .btn-white-border {
+            color: white !important;
+            border-color: white !important;
+        }
+
+        .btn-white-border:hover {
+            background-color: white !important;
+            color: #6f42c1 !important;
+        }
+        
     </style>
 </head>
 
 <body>
-
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg">
-        <div class="container">
-            <a class="navbar-brand" href="/">Gözlük Dünyası</a>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" th:href="@{/}">Ana Sayfa</a></li>
-                    <li class="nav-item"><a class="nav-link" th:href="@{/urunler}">Ürünler</a></li>
-                    <li class="nav-item"><a class="nav-link" th:href="@{/iletisim}">İletişim</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+	<!-- ✅ Ortalanmış arama çubuğu + sağ bağlantılı NAVBAR fragment -->
+    <div th:replace="fragments/navbar :: navbar"></div>
+    
 
     <!-- Giriş Formu -->
     <div class="container d-flex justify-content-center align-items-center min-vh-100">

@@ -62,6 +62,7 @@ public class UserController {
 
         try {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
+            user.setRole("USER");
             user.setEnabled(false);
             userRepository.save(user);
             logger.debug("Kullanıcı veritabanına kaydedildi: {}", user.getUsername());

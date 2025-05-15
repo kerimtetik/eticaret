@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="tr">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark shadow-sm" style="background-color: #6f42c1;" th:fragment="navbar">
+        <div class="container">
+            <!-- Sol: Logo -->
+            <a class="navbar-brand" href="/home">Gözlük Dünyası</a>
+
+            <!-- Ortada: Arama çubuğu -->
+            <form class="d-flex mx-auto w-50" th:action="@{/search}" method="get">
+                <input class="form-control me-2" type="search" name="query"
+                       placeholder="Ürün, marka veya kategori ara..." aria-label="Search">
+                <button class="btn btn-outline-light btn-white-border" type="submit">Ara</button>
+            </form>
+
+            <!-- Sağ: Bağlantılar -->
+            <div class="collapse navbar-collapse justify-content-end">
+                <ul class="navbar-nav align-items-center">
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="/home">Ana Sayfa</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="/products">Ürünler</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="/contact">İletişim</a>
+                    </li>
+
+                    <!-- Giriş yapılmışsa -->
+                    <li class="nav-item" th:if="${session.loggedInUser != null}">
+                        <a class="nav-link position-relative text-white" href="/cart">
+                            🛒 Sepetim
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                                  th:if="${cartItems != null}" th:text="${cartItems.size()}">0</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" th:if="${session.loggedInUser != null}">
+                        <a class="nav-link btn btn-sm btn-light text-dark ms-2" href="/logout">Çıkış Yap</a>
+                    </li>
+
+                    <!-- Giriş yapılmamışsa -->
+                    <li class="nav-item" th:if="${session.loggedInUser == null}">
+                        <a class="nav-link btn btn-primary btn-sm text-white ms-2" href="/login">Giriş Yap</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</body>
+</html>

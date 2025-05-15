@@ -7,12 +7,10 @@
     <title>Gözlük Dünyası</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        /* Genel tema rengi mor */
         body {
             background-color: #f8f2fa;
         }
 
-        /* Navbar mor */
         .navbar {
             background-color: #6f42c1 !important;
         }
@@ -23,7 +21,6 @@
             color: white !important;
         }
 
-        /* Arama butonu mor çerçeveli */
         .btn-outline-success {
             border-color: #6f42c1;
             color: #6f42c1;
@@ -34,7 +31,6 @@
             color: white;
         }
 
-        /* Mor buton efekti */
         .btn-color-purple {
             background-color: #6f42c1;
             color: white;
@@ -45,7 +41,6 @@
             background-color: #572da7 !important;
         }
 
-        /* Sepete ekle butonları */
         .btn-success {
             background-color: #6830d0;
             border-color: #6f42c1;
@@ -56,7 +51,6 @@
             border-color: #572da7;
         }
 
-        /* Footer */
         footer.bg-dark {
             background-color: #4b2d7a !important;
         }
@@ -107,113 +101,77 @@
             font-size: 1.5rem;
         }
 
-	        .video-container {
-	    display: block; /* veya flex değilse */
-	    margin-bottom: 20px;
-	}
+        .video-container {
+            display: block;
+            margin-bottom: 20px;
+        }
 
-	
-			.video-box video {
-	    height: 1000px;
-	    width: 100%;
-	    object-fit: cover;
-	    border-radius: 10px;
-	    transition: transform 0.3s ease;
-	}
-		
-		.video-box:hover video {
-		    transform: scale(1.02);
-		    cursor: pointer;
-		}
-	
-		  
+        .video-box video {
+            height: 1000px;
+            width: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .video-box:hover video {
+            transform: scale(1.02);
+            cursor: pointer;
+        }
+
+        .btn-white-border {
+            color: white !important;
+            border-color: white !important;
+        }
+
+        .btn-white-border:hover {
+            background-color: white !important;
+            color: #6f42c1 !important;
+        }
     </style>
 </head>
 
 <body>
 
+    <!-- ✅ Ortalanmış arama çubuğu + sağ bağlantılı NAVBAR fragment -->
+    <div th:replace="fragments/navbar :: navbar"></div>
 
+    <!-- İçerik -->
+    <div class="container-fluid mt-4 px-5">
+        <div class="row justify-content-center">
 
-  
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
-        <div class="container">
-            <a class="navbar-brand" href="/home">Gözlük Dünyası</a>
-
-            <!-- Arama Çubuğu -->
-            <form class="d-flex mx-auto w-50" th:action="@{/search}" method="get">
-                <input class="form-control me-2" type="search" name="query"
-                    placeholder="Ürün, marka veya kategori ara..." aria-label="Search">
-                <button class="btn btn-outline-success" type="submit">Ara</button>
-            </form>
-
-            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-                <ul class="navbar-nav align-items-center">
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="/home">Ana Sayfa</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/products">Ürünler</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/contact">İletişim</a>
-                    </li>
-
-                    <li class="nav-item" th:if="${user == null}">
-                        <a class="nav-link btn btn-primary btn-sm text-white ms-2" href="/login">Giriş Yap</a>
-                    </li>
-
-                    <li class="nav-item" th:if="${user != null}">
-                        <a class="nav-link btn btn-outline-dark btn-sm ms-2" href="/cart">
-                            🛒 Sepetim
-                            <span th:if="${cartItems != null}" th:text="'(' + ${cartItems.size()} + ')'"></span>
-                        </a>
-                    </li>
-                </ul>
+            <!-- Kadın -->
+            <div class="col-md-4 col-12 mb-4">
+                <a href="/products?gender=Unisex&gender=Kadin" class="video-box text-decoration-none d-block">
+                    <video autoplay muted loop class="w-100 video-stretch">
+                        <source src="/videos/woman.mp4" type="video/mp4">
+                        Tarayıcınız video etiketini desteklemiyor.
+                    </video>
+                </a>
             </div>
+
+            <!-- Erkek -->
+            <div class="col-md-4 col-12 mb-4">
+                <a href="/products?gender=Unisex&gender=Erkek" class="video-box text-decoration-none d-block">
+                    <video autoplay muted loop class="w-100 video-stretch">
+                        <source src="/videos/man.mp4" type="video/mp4">
+                        Tarayıcınız video etiketini desteklemiyor.
+                    </video>
+                </a>
+            </div>
+
+            <!-- Çocuk -->
+            <div class="col-md-4 col-12 mb-4">
+                <a href="/products?gender=Cocuk" class="video-box text-decoration-none d-block">
+                    <video autoplay muted loop class="w-100 video-stretch">
+                        <source src="/videos/child.mp4" type="video/mp4">
+                        Tarayıcınız video etiketini desteklemiyor.
+                    </video>
+                </a>
+            </div>
+
         </div>
-    </nav>
-
-<div class="container-fluid mt-4 px-5">
-    <div class="row justify-content-center">
-
-        <!-- Kadın -->
-        <div class="col-md-4 col-12 mb-4">
-            <a href="/products?gender=Unisex&gender=Female"  class="video-box text-decoration-none d-block">
-                <video autoplay muted loop class="w-100 video-stretch">
-                    <source src="/videos/woman.mp4" type="video/mp4">
-                    Tarayıcınız video etiketini desteklemiyor.
-                </video>
-            </a>
-        </div>
-
-        <!-- Erkek -->
-        <div class="col-md-4 col-12 mb-4">
-            <a href="/products?gender=Unisex&gender=Female"  class="video-box text-decoration-none d-block">
-                <video autoplay muted loop class="w-100 video-stretch">
-                    <source src="/videos/man.mp4" type="video/mp4">
-                    Tarayıcınız video etiketini desteklemiyor.
-                </video>
-            </a>
-        </div>
-
-        <!-- Çocuk -->
-        <div class="col-md-4 col-12 mb-4">
-            <a href="/products?gender=Kid" class="video-box text-decoration-none d-block">
-                <video autoplay muted loop class="w-100 video-stretch">
-                    <source src="/videos/child.mp4" type="video/mp4">
-                    Tarayıcınız video etiketini desteklemiyor.
-                </video>
-            </a>
-        </div>
-
     </div>
-</div>
-
-
-
-
 
     <!-- Footer -->
     <footer class="bg-dark text-white text-center p-3 mt-5">

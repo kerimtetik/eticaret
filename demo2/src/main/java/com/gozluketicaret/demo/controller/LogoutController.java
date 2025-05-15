@@ -20,9 +20,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class LogoutController {
 
-    @Autowired
     private static final Logger logger = LoggerFactory.getLogger(LogoutController.class);
-
 
     @GetMapping("/logout")
     public String logout(HttpSession session) {
@@ -34,6 +32,6 @@ public class LogoutController {
         }
 
         session.invalidate();  // oturumu temizle
-        return "redirect:/login?logout";
+        return "redirect:/home";  // login yerine anasayfaya dön
     }
 }

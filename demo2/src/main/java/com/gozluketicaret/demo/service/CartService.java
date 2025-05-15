@@ -49,6 +49,7 @@ public class CartService {
             }
         }
 
+
         CartItem newItem = new CartItem();
         newItem.setCart(cart);  // kullanıcı ilişkisi buradan kurulmuş oluyor
         newItem.setProduct(product);

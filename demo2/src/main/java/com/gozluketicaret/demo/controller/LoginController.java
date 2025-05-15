@@ -58,7 +58,13 @@ public class LoginController {
             if (passwordEncoder.matches(password, user.getPassword())) {
                 session.setAttribute("loggedInUser", user);
                 logger.info("Giriş başarılı: {}", username);
-                return "redirect:/home";
+
+                // ✅ Rol kontrolü yap
+                if ("ADMIN".equalsIgnoreCase(user.getRole())) {
+                    return "redirect:/admin/dashboard";
+                } else {
+                    return "redirect:/home";
+                }
             }
         }
 
