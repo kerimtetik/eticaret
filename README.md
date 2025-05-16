@@ -21,10 +21,10 @@ Proje, temel özellikleri ve modern teknolojilerle geliştirilmiş bir yapıya s
 
 ## Kullanılan Teknolojiler
 
-- Backend: [örneğin: Java + Spring Boot]
-- Frontend: [örneğin: HTML, CSS, JavaScript, Bootstrap]
-- Veritabanı: [örneğin: PostgreSQL]
-- Diğer: [örneğin: Docker, JWT Authentication, vs.]
+- Backend: [ Java + Spring Boot]
+- Frontend: [ HTML, CSS, JavaScript, Bootstrap]
+- Veritabanı: [: PostgreSQL]
+- Diğer: [Docker]
 
 ## Kurulum
 
@@ -37,12 +37,6 @@ Proje, temel özellikleri ve modern teknolojilerle geliştirilmiş bir yapıya s
 - Sipariş verme ve takip etme  
 - Yönetici paneli üzerinden ürün yönetimi
 
-## Kullanılan Teknolojiler
-
-- Backend: [örneğin: Java + Spring Boot]
-- Frontend: [örneğin: HTML, CSS, JavaScript, Bootstrap]
-- Veritabanı: [örneğin: PostgreSQL]
-- Diğer: [örneğin: Docker, JWT Authentication, vs.]
 
 ## Kurulum
 
