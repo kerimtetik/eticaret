@@ -62,7 +62,7 @@ Docker ile dağıtım, JWT ile güvenlik (hazır) ve yönetici paneli içerir.
 
 ```bash
 git clone https://github.com/<kerimtetik>/eticaret.git
-cd gozluk-eticaret
+cd eticaret
 ```
 
 ### 2 ⟩ Çevre değişkenlerinizi oluşturun
