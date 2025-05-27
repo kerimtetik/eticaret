@@ -28,7 +28,7 @@ public class EmailService {
 
 	            helper.setTo(to);
 	            helper.setSubject(subject);
-	            helper.setText(body, true); // true = HTML içeriği desteklenir
+	            helper.setText(body, true); 
 
 	            mailSender.send(message);
 	            logger.info("E-posta başarıyla gönderildi: {}", to);

@@ -60,41 +60,103 @@
     </style>
 </head>
 <body>
- <div th:replace="fragments/navbar :: navbar"></div>
 
+<!-- Navbar -->
+<div th:replace="fragments/navbar :: navbar"></div>
+
+<!-- Sayfa içeriği -->
 <div class="container mt-5">
-    <h2 class="text-center mb-4">Ürünler</h2>
-    <div class="row g-4">
-        <th:block th:each="product : ${products}">
-            <div class="col-md-4 col-sm-6">
-                <div class="product-card text-center d-flex flex-column justify-content-between h-100">
-                    <!-- Ürün Görseli -->
-                    <img th:src="@{${product.images[0].imageUrl}}" alt="Ürün Görseli"
-                         class="product-image img-fluid rounded" />
-
-                    <!-- Ürün Adı -->
-                    <a th:href="@{'/product/' + ${product.id}}" class="text-decoration-none text-dark mt-3">
-                        <h5 th:text="${product.name}">Ürün Adı</h5>
-                    </a>
-
-                    <!-- Fiyat -->
-                    <p class="text-muted" th:text="'₺' + ${product.price}">₺0.00</p>
-
-                    <!-- Stok Tükendi -->
-                    <p th:if="${product.outOfStock}" class="text-danger fw-bold">Stok Tükendi</p>
-
-                    <!-- Sepete Ekle -->
-                    <form th:action="@{/cart/add}" method="POST" th:if="${!product.outOfStock}">
-                        <input type="hidden" name="productId" th:value="${product.id}" />
-                        <input type="hidden" name="quantity" value="1" />
-                        <button type="submit" class="btn btn-purple btn-sm">Sepete Ekle</button>
-                    </form>
-                </div>
+    <div class="row">
+        <!-- Sol: Filtre Alanı -->
+        <div class="col-md-3 mb-4">
+            <form method="get" action="/products" class="bg-white p-3 rounded shadow-sm">
+                <h5>Filtrele</h5>
+                
+                <!-- Marka -->
+                <!-- Marka Checkboxları -->
+<div class="mb-3">
+    <label class="form-label">Marka</label>
+    <div>
+        <th:block th:each="m : ${allBrands}">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="brand"
+                       th:value="${m}" th:checked="${selectedBrands != null and selectedBrands.contains(m)}"
+                       th:id="'brand_' + ${m}">
+                <label class="form-check-label" th:for="'brand_' + ${m}" th:text="${m}">Marka</label>
             </div>
         </th:block>
     </div>
 </div>
+                
 
+                <!-- Cinsiyet -->
+                <div class="mb-3">
+                    <label class="form-label">Cinsiyet</label>
+                    <select name="gender" class="form-select">
+                        <option value="">Tümü</option>
+                        <option value="Erkek">Erkek</option>
+                        <option value="Kadin">Kadın</option>
+                        <option value="Unisex">Unisex</option>
+                        <option value="Cocuk">Çocuk</option>
+                    </select>
+                </div>
+
+                <!-- Fiyat Aralığı -->
+                <div class="mb-3">
+                    <label class="form-label">Fiyat (₺)</label>
+                    <div class="d-flex">
+                        <input type="number" name="minPrice" class="form-control me-2" placeholder="Min">
+                        <input type="number" name="maxPrice" class="form-control" placeholder="Max">
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-purple w-100">Filtrele</button>
+            </form>
+        </div>
+
+        <!-- Sağ: Ürünler -->
+        <div class="col-md-9">
+            <h2 class="text-center mb-4">Ürünler</h2>
+            <div class="row g-4">
+                <th:block th:each="product : ${products}">
+                    <div class="col-md-4 col-sm-6">
+                        <div class="product-card text-center d-flex flex-column justify-content-between h-100">
+                            <!-- Ürün Görseli -->
+                            
+                            
+                            <img th:src="${product.images[0].imageUrl}"
+     alt="Ürün Görseli"
+     class="product-image img-fluid rounded" />
+
+
+
+
+                            <!-- Ürün Adı -->
+                            <a th:href="@{'/product/' + ${product.id}}" class="text-decoration-none text-dark mt-3">
+                                <h5 th:text="${product.name}">Ürün Adı</h5>
+                            </a>
+
+                            <!-- Fiyat -->
+                            <p class="text-muted" th:text="  ${product.price}+ '₺'">₺0.00</p>
+
+                            <!-- Stok Tükendi -->
+                            <p th:if="${product.outOfStock}" class="text-danger fw-bold">Stok Tükendi</p>
+
+                            <!-- Sepete Ekle -->
+                            <form th:action="@{/cart/add}" method="POST" th:if="${!product.outOfStock}">
+                                <input type="hidden" name="productId" th:value="${product.id}" />
+                                <input type="hidden" name="quantity" value="1" />
+                                <button type="submit" class="btn btn-purple btn-sm">Sepete Ekle</button>
+                            </form>
+                        </div>
+                    </div>
+                </th:block>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Script -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

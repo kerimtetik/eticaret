@@ -1,6 +1,7 @@
 package com.gozluketicaret.demo;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -15,10 +16,13 @@ public class OrderItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    private Long productId;
+    
+    
 
     private String productName;
+    
+    
+
 
     public Long getId() {
 		return id;
@@ -28,13 +32,9 @@ public class OrderItem {
 		this.id = id;
 	}
 
-	public Long getProductId() {
-		return productId;
-	}
+	
 
-	public void setProductId(Long productId) {
-		this.productId = productId;
-	}
+	
 
 	public String getProductName() {
 		return productName;
@@ -75,6 +75,18 @@ public class OrderItem {
     @ManyToOne
     @JoinColumn(name = "order_id")
     private Order order;
+    
+    public Product getProduct() {
+		return product;
+	}
+
+	public void setProduct(Product product) {
+		this.product = product;
+	}
+
+	@ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "product_id", insertable = false, updatable = false)
+    private Product product;
 
     // Getters & Setters
 }

@@ -1,6 +1,8 @@
 package com.gozluketicaret.demo.controller;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,6 +15,9 @@ import com.gozluketicaret.demo.repository.ProductRepository;
 import com.gozluketicaret.demo.service.ProductService;
 
 import org.springframework.ui.Model;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 
 @Controller
@@ -22,21 +27,60 @@ public class ProductController {
 	    private ProductService productService;
 	    @Autowired
 	    private ProductRepository productRepository;
+	    
+	    private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
+	    
+	    
 
 
-	    // Ürünler sayfası (filtreli veya tam liste)
 	    @GetMapping("/products")
-	    public String showProducts(@RequestParam(required = false) List<String> gender, Model model) {
-	        List<Product> products;
+	    public String listProducts(
+	            @RequestParam(required = false) List<String> brand,
+	            @RequestParam(required = false) List<String> gender,
+	            @RequestParam(required = false) Double minPrice,
+	            @RequestParam(required = false) Double maxPrice,
+	            Model model) {
 
-	        if (gender != null && !gender.isEmpty()) {
-	            products = productService.getProductsByGenderList(gender); // Çoklu filtreli
-	        } else {
-	            products = productService.getAllProducts(); // Tüm ürünler
+	        List<Product> products = productRepository.findAll();
+
+	        if (brand != null && !brand.isEmpty()) {
+	            products = products.stream()
+	                    .filter(p -> brand.contains(p.getBrand()))
+	                    .collect(Collectors.toList());
 	        }
 
+	        if (gender != null && !gender.isEmpty()) {
+	            products = products.stream()
+	                    .filter(p -> gender.contains(p.getGender()))
+	                    .collect(Collectors.toList());
+	        }
+
+
+	        if (minPrice != null) {
+	            products = products.stream()
+	                    .filter(p -> p.getPrice() >= minPrice)
+	                    .collect(Collectors.toList());
+	        }
+
+	        if (maxPrice != null) {
+	            products = products.stream()
+	                    .filter(p -> p.getPrice() <= maxPrice)
+	                    .collect(Collectors.toList());
+	        }
+
+	        // Tüm markaları filtre menüsünde göstermek için
+	        List<String> allBrands = products.stream()
+	                .map(Product::getBrand)
+	                .filter(Objects::nonNull)
+	                .distinct()
+	                .collect(Collectors.toList());
+
 	        model.addAttribute("products", products);
+	        model.addAttribute("allBrands", allBrands);
+	        model.addAttribute("selectedBrands", brand); // checkbox işaretlensin
+	        logger.info("Urunler listelendi");
 	        return "products";
+	        
 	    }
 
 	    // Admin paneli: tüm ürünler ve stok sayısı

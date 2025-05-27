@@ -12,12 +12,17 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 @Controller
 public class ProductSearchController {
 
  @Autowired
  private ProductRepository productRepository;
+ private static final Logger logger = LoggerFactory.getLogger(ProductSearchController.class);
+
 
  @GetMapping("/search")
  public String searchProducts(@RequestParam("query") String query, Model model) {
@@ -35,6 +40,7 @@ public class ProductSearchController {
 
      model.addAttribute("products", results);
      model.addAttribute("query", query);
+     logger.info("Urunler listelendi");
      return "search-results";  // gösterilecek HTML
  }
 }

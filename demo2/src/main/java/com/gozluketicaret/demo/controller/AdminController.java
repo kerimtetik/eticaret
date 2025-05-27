@@ -1,9 +1,11 @@
 package com.gozluketicaret.demo.controller;
 
 import com.gozluketicaret.demo.Order;
+import com.gozluketicaret.demo.OrderItem;
 import com.gozluketicaret.demo.Product;
 import com.gozluketicaret.demo.ProductImage;
 import com.gozluketicaret.demo.model.User;
+import com.gozluketicaret.demo.repository.OrderItemRepository;
 import com.gozluketicaret.demo.repository.OrderRepository;
 import com.gozluketicaret.demo.repository.ProductRepository;
 import com.gozluketicaret.demo.repository.UserRepository;
@@ -28,6 +30,9 @@ public class AdminController {
 
     @Autowired
     private UserRepository userRepository;
+    
+    @Autowired
+    private OrderItemRepository orderItemRepository;
 
     // ✅ Admin Panel Ana Sayfa (rol kontrolü ile)
     @GetMapping("/dashboard")
@@ -39,6 +44,26 @@ public class AdminController {
 
         model.addAttribute("admin", user);
         return "admin-dashboard";
+    }
+    
+
+    @GetMapping("/orders/{orderId}")
+    public String viewOrderDetails(@PathVariable Long orderId, HttpSession session, Model model) {
+        User user = (User) session.getAttribute("loggedInUser");
+        if (user == null || !"ADMIN".equals(user.getRole())) {
+            return "/login";
+        }
+
+        Order order = orderRepository.findById(orderId).orElse(null);
+        if (order == null) {
+            return "redirect:/admin/orders"; // veya hata sayfası
+        }
+
+        List<OrderItem> orderItems = orderItemRepository.findByOrderId(orderId);
+
+        model.addAttribute("order", order);
+        model.addAttribute("items", orderItems);
+        return "admin-order-details";
     }
 
     // ✅ Ürün Ekleme Sayfası (rol kontrolü ile)

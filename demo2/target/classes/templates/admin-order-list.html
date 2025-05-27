@@ -7,10 +7,9 @@
 </head>
 <body>
 
-
 <div class="container mt-4">
     <h3 class="mb-4">Tüm Siparişler</h3>
-    
+
     <table class="table table-bordered table-hover">
         <thead class="table-dark">
             <tr>
@@ -19,18 +18,27 @@
                 <th>Adres ID</th>
                 <th>Toplam Tutar</th>
                 <th>Tarih</th>
+                <th>İşlem</th> <!-- ✅ Detay butonu için yeni sütun -->
             </tr>
         </thead>
         <tbody>
             <tr th:each="order : ${orders}">
-                <td th:text="${order.id}"></td>
-                <td th:text="${order.userId}"></td>
-                <td th:text="${order.addressId}"></td>
-                <td th:text="${order.totalAmount} + ' ₺'"></td>
-                <td th:text="${#temporals.format(order.createdAt, 'dd.MM.yyyy HH:mm')}"></td>
+                <td th:text="${order.id}">1</td>
+                <td th:text="${order.userId}">1001</td>
+                <td th:text="${order.addressId}">2001</td>
+                <td th:text="${order.totalAmount + ' ₺'}">100 ₺</td>
+                <td th:text="${#temporals.format(order.createdAt, 'dd.MM.yyyy HH:mm')}">27.05.2025 21:00</td>
+                <td>
+                    <a th:href="@{/admin/orders/{id}(id=${order.id})}" class="btn btn-sm btn-primary">
+                        Detay
+                    </a>
+                </td>
             </tr>
         </tbody>
     </table>
+    
+    <!-- ✅ Geri Dön Butonu -->
+    <a href="/admin/dashboard" class="btn btn-secondary mt-3">← Yönetici Paneline Dön</a>
 </div>
 
 </body>

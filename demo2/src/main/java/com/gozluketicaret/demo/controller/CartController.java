@@ -1,6 +1,7 @@
 package com.gozluketicaret.demo.controller;
 
 import com.gozluketicaret.demo.CartItem;
+
 import com.gozluketicaret.demo.Product;
 import com.gozluketicaret.demo.model.User;
 import com.gozluketicaret.demo.repository.ProductRepository;
@@ -14,6 +15,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 import java.util.List;
 
@@ -26,6 +30,9 @@ public class CartController {
 
     @Autowired
     private ProductRepository productRepository;
+    
+    private static final Logger logger = LoggerFactory.getLogger(CartController.class);
+
 
     // Sepet sayfasını gösterir
     
@@ -39,6 +46,8 @@ public class CartController {
             double total = cartService.getCartTotal(user.getId());
             model.addAttribute("cartTotal", total);
         }
+        logger.info("Sepet gosterildi");
+
         return "cart";
     }
 
@@ -54,6 +63,7 @@ public class CartController {
 
         Product product = productRepository.findById(productId).orElse(null);
         if (product != null) {
+        	logger.info("Sepete urun eklendi");
             cartService.addToCart(user, product, 1); // adeti 1 varsayıldı
         }
 
@@ -78,6 +88,7 @@ public class CartController {
     public ResponseEntity<String> removeItem(@RequestParam Long cartItemId) {
         try {
             cartService.removeItem(cartItemId);
+            logger.info("Sepetten urun silindi");
             return ResponseEntity.ok("Silindi");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Hata oluştu");
