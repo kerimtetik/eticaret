@@ -24,7 +24,7 @@ Docker ile dağıtım, JWT ile güvenlik (hazır) ve yönetici paneli içerir.
 5. [Docker ile Çalıştırma](#docker-ile-çalıştırma)
 6. [Dizin Yapısı](#dizin-yapısı)
 7. [Çevre Değişkenleri](#çevre-değişkenleri)
-8. [Katkıda Bulunma](#katkıda-bulunma)
+
 
 
 ---
